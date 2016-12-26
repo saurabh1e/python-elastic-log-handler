@@ -155,7 +155,7 @@ class LogHandler(logging.Handler):
             headers = {"Content-type": "text/plain"}
             for current_try in range(number_of_retries):
                 response = requests.post(self.url, headers=headers,
-                                         data='\n'.join(temp_logs))
+                                         data='\n'.join(temp_logs)+'\n')
                 if response.status_code != 200:  # 429 400, on 400 print stdout
                     if response.status_code == 400:
 
