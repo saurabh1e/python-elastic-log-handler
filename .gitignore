@@ -153,5 +153,4 @@ ENV/
 
 .idea
 .gitignore
-.idea/
 python-logger/

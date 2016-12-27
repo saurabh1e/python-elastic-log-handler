@@ -99,6 +99,8 @@ class LogHandler(logging.Handler):
                 json.dumps(message)])
 
             # Notify watcher for a new log coming in
+            if len(self.logs) >= self.logs_drain_count:
+                self.drain_messages()
             self.logs_counter_condition.notify()
 
         finally:
