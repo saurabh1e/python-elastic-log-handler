@@ -24,7 +24,7 @@ class LogHandler(logging.Handler):
     drain_lock = Lock()
 
     def __init__(self, logs_drain_count=100, logs_drain_timeout=10, log_type='python',
-                 url=None, index=None, index_type=None):
+                 url=None, index=None, index_type=None, username, password):
 
         logging.Handler.__init__(self)
         self.log_type = log_type
@@ -35,6 +35,8 @@ class LogHandler(logging.Handler):
         self.index = index
         self.index_type = index_type
         self.url = "{0}/{1}/{2}/_bulk".format(url, index, index_type)
+        self.username = username
+        self.password = password
 
         self.is_main_thread_active = lambda: any((i.name == "MainThread") and i.is_alive() for i in enumerate())
 
@@ -157,7 +159,7 @@ class LogHandler(logging.Handler):
             headers = {"Content-type": "text/plain"}
             for current_try in range(number_of_retries):
                 response = requests.post(self.url, headers=headers,
-                                         data='\n'.join(temp_logs)+'\n')
+                                         data='\n'.join(temp_logs)+'\n', auth=(self.username, self.password))
                 if response.status_code != 200:  # 429 400, on 400 print stdout
                     if response.status_code == 400:
 
