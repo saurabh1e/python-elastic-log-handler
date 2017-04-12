@@ -24,7 +24,7 @@ class LogHandler(logging.Handler):
     drain_lock = Lock()
 
     def __init__(self, logs_drain_count=100, logs_drain_timeout=10, log_type='python',
-                 url=None, index=None, index_type=None, username, password):
+                 url=None, index=None, index_type=None, username=None, password=None):
 
         logging.Handler.__init__(self)
         self.log_type = log_type
